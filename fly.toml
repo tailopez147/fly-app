@@ -1,23 +1,22 @@
-# fly.toml app configuration file generated for fly-app--zkb2g on 2026-10-12T20:41:06Z
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
+# fly.toml — minimal static-site app
+# Rename "app" to a globally-unique name before deploying, e.g.
+#   fly launch --no-deploy
+# will fill this in for you.
 
-app = 'fly-app--zkb2g'
-primary_region = 'lax'
+app = "index-reader"
+primary_region = "iad"
 
 [build]
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = 'stop'
+  auto_stop_machines = "stop"
   auto_start_machines = true
   min_machines_running = 0
-  processes = ['app']
+  processes = ["app"]
 
 [[vm]]
-  memory = '256mb'
-  cpu_kind = 'shared'
+  cpu_kind = "shared"
   cpus = 1
   memory_mb = 256

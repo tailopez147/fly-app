@@ -1,10 +1,10 @@
-# fly.toml app configuration file generated for flypapp-d3rmtg on 2026-10-12T21:35:46Z
+# fly.toml app configuration file generated for loginsurf-online on 2026-10-13T07:44:22Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'flypapp-d3rmtg'
-primary_region = 'lax'
+app = 'loginsurf-online'
+primary_region = 'ams'
 
 [build]
 

@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for loginsurf-online on 2026-10-13T07:44:22Z
+# fly.toml app configuration file generated for fly-app-ku2gsg on 2026-10-15T13:59:47Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'loginsurf-online'
+app = 'fly-app-ku2gsg'
 primary_region = 'ams'
 
 [build]

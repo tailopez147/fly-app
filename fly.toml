@@ -1,10 +1,10 @@
-# fly.toml app configuration file generated for fly-app-ku2gsg on 2026-10-15T13:59:47Z
+# fly.toml app configuration file generated for auth-web on 2026-10-18T22:36:44Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'fly-app-ku2gsg'
-primary_region = 'ams'
+app = 'auth-web'
+primary_region = 'jnb'
 
 [build]
 

